@@ -1,4 +1,9 @@
 #!/bin/sh
+#
+# script to download subtitle and rename 
+# files after completed download
+# dependencies:
+#	-filebot
 
 logfile=~/media/.media-scripts/dl_log.txt
 echo "Downloaded file: " $TR_TORRENT_NAME " In dir: " $TR_TORRENT_DIR " Downloaded at time: " $TR_TIME_LOCALTIME >> $logfile
