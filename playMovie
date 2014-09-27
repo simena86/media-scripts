@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# terminal command to play movie. 
+# input: movie file or episode number
+#
+
+
+re='^[0-9]+$'
+if ! [[ $1 =~ $re ]] ; then
+	# script input is not episode number
+	movie_name=$1	
+	no_ext="${movie_name%.*}"
+	subtitle=$(ls * | grep "$no_ext" | grep -m 1 srt)
+	echo "Playing movie: " $movie_name " with subtitle: " $subtitle
+	mplayer "$movie_name" -sub "$subtitle"
+else 
+	# script input is an episode number
+	if [ "$1" -lt 10 ] ; then 
+		re="*[xeXE]0$1*"
+	else
+		re="*[xeXE]$1*"
+	fi
+	ls $re
+	movie_name=$(ls $re | grep -v '\bsrt$')
+	no_ext="${movie_name%.*}"
+	subtitle=$(ls * | grep "$no_ext" | grep -m 1 srt)
+	echo "Playing movie: " $movie_name " with subtitle: " $subtitle
+	mplayer "$movie_name" -sub "$subtitle"
+fi
+
+		
