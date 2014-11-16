@@ -2,17 +2,16 @@
 #
 # terminal command to play movie. 
 # input: movie file or episode number
-#
-
 
 re='^[0-9]+$'
-if ! [[ $1 =~ $re ]] ; then
+if test "$#" -ne 1; then
+	# play whatever movie is in the folder
+	movie_name=$(ls . | grep "avi\|mp4\|mkv\|mpeg" )
+	echo "Playing the following movie:"
+	echo $movie_name
+elif ! [[ $1 =~ $re ]] ; then
 	# script input is not episode number
 	movie_name=$1	
-	no_ext="${movie_name%.*}"
-	subtitle=$(ls * | grep "$no_ext" | grep -m 1 srt)
-	echo "Playing movie: " $movie_name " with subtitle: " $subtitle
-	mplayer "$movie_name" -sub "$subtitle"
 else 
 	# script input is an episode number
 	if [ "$1" -lt 10 ] ; then 
@@ -22,10 +21,10 @@ else
 	fi
 	ls $re
 	movie_name=$(ls $re | grep -v '\bsrt$')
-	no_ext="${movie_name%.*}"
-	subtitle=$(ls * | grep "$no_ext" | grep -m 1 srt)
-	echo "Playing movie: " $movie_name " with subtitle: " $subtitle
-	mplayer "$movie_name" -sub "$subtitle"
 fi
 
-		
+no_ext="${movie_name%.*}"
+echo $no_ext
+subtitle=$(ls * | grep "$no_ext" | grep -m 1 srt)
+echo "Playing movie: " $movie_name " with subtitle: " $subtitle
+mplayer "$movie_name" -sub "$subtitle"
