@@ -26,5 +26,10 @@ fi
 no_ext="${movie_name%.*}"
 echo $no_ext
 subtitle=$(ls * | grep "$no_ext" | grep -m 1 srt)
-echo "Playing movie: " $movie_name " with subtitle: " $subtitle
-mplayer "$movie_name" -sub "$subtitle"
+if [ -z $subtitle ] ; then
+	echo "Playing movie: " $movie_name " with no subtitle"
+	mplayer "$movie_name"
+else
+	echo "Playing movie: " $movie_name " with subtitle: " $subtitle
+	mplayer "$movie_name" -sub "$subtitle"
+fi
